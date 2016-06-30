@@ -33,48 +33,48 @@ public class MainActivity extends AppCompatActivity {
         gpsActivo = locManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
 
-            if (gpsActivo) {
+        if (gpsActivo) {
 
-                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
-                    return;
-                }
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
 
-                location = locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                latitud.setText("latitud: " + String.valueOf(location.getLatitude()));
-                longitud.setText("longitud: " + String.valueOf(location.getLongitude()));
+            location = locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            latitud.setText("latitud: " + String.valueOf(location.getLatitude()));
+            longitud.setText("longitud: " + String.valueOf(location.getLongitude()));
+            String latitudP = "latitud=" + String.valueOf(location.getLatitude());
+            String longitudP = "longitud=" + String.valueOf(location.getLongitude());
+
+            HttpHandler handler = new HttpHandler();
+            String txt = handler.post("http://190.141.120.200:8080/Rutas/ubicacion/guardar/123456?" + latitudP + "&" + longitudP);
+            res.setText(txt);
+
+        }else{
+            latitud.setText("sin datos de latitud");
+            longitud.setText("sin datos de longitud");
+
+        }
+
+
+        LocationListener locListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+
+                latitud.setText("latitud: "+String.valueOf(location.getLatitude()));
+                longitud.setText("longitud: "+String.valueOf(location.getLongitude()));
                 String latitudP = "latitud=" + String.valueOf(location.getLatitude());
                 String longitudP = "longitud=" + String.valueOf(location.getLongitude());
 
                 HttpHandler handler = new HttpHandler();
                 String txt = handler.post("http://190.141.120.200:8080/Rutas/ubicacion/guardar/123456?" + latitudP + "&" + longitudP);
                 res.setText(txt);
-
-            }else{
-                latitud.setText("sin datos de latitud");
-                longitud.setText("sin datos de longitud");
-
-            }
-
-
-       LocationListener locListener = new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-
-
-                latitud.setText("latitud: "+String.valueOf(location.getLatitude()));
-                longitud.setText("longitud: "+String.valueOf(location.getLongitude()));
-
-
-
-
-
             }
 
             @Override
@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onProviderEnabled(String s) {
-
+                texto4.setText("");
             }
 
             @Override
@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000*60, 5,locListener);
+        locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000*10, 5, locListener);
     }
 /*/------------------------------------
 public String post(String postUrl)

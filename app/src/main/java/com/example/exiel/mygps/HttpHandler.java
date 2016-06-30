@@ -25,7 +25,6 @@ public class HttpHandler {
     public String post(String postUrl)
     {
         MainActivity ma = new MainActivity();
-        System.out.println(postUrl);
 
         try {
 
