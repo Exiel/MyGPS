@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Mygps</string>
+    <string name="latitud">Latitud</string>
+    <string name="longitud">Longitud</string>
+    <string name="mostrar">mostrar</string>
+    <string name="direccion" />
+    <string name="direccion1">direccion</string>
+</resources>
