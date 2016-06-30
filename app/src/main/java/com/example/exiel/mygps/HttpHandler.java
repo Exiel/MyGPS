@@ -24,14 +24,13 @@ public class HttpHandler {
 
     public String post(String postUrl)
     {
-    MainActivity ma = new MainActivity();
+        MainActivity ma = new MainActivity();
+        System.out.println(postUrl);
 
         try {
 
-            String latitud_post = String.valueOf(ma.location.getLatitude());
-            String longitud_post = String.valueOf(ma.location.getLongitude());
             restOperation = new RestOperation();
-            restOperation.execute("http://190.141.120.200:8080/Rutas/ubicacion/guardar/123456?latitud="+latitud_post+"&longitud="+longitud_post);
+            restOperation.execute(postUrl);
 
             String text = restOperation.getStatus().toString();
             return text;

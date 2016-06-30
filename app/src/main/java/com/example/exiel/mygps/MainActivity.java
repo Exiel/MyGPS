@@ -29,12 +29,8 @@ public class MainActivity extends AppCompatActivity {
         res = (TextView)findViewById(R.id.resp);
 
 
-                locManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-                gpsActivo = locManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-
-                HttpHandler handler = new HttpHandler();
-                String txt = handler.post("http://190.141.120.200:8080/Rutas/ubicacion/guardar/123456");
-                res.setText(txt);
+        locManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        gpsActivo = locManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
 
             if (gpsActivo) {
@@ -50,12 +46,18 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
 
-                location = locManager.getLastKnownLocation(locManager.GPS_PROVIDER);
+                location = locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                 latitud.setText("latitud: " + String.valueOf(location.getLatitude()));
                 longitud.setText("longitud: " + String.valueOf(location.getLongitude()));
+                String latitudP = "latitud=" + String.valueOf(location.getLatitude());
+                String longitudP = "longitud=" + String.valueOf(location.getLongitude());
+
+                HttpHandler handler = new HttpHandler();
+                String txt = handler.post("http://190.141.120.200:8080/Rutas/ubicacion/guardar/123456?" + latitudP + "&" + longitudP);
+                res.setText(txt);
 
             }else{
-                latitud.setText("sin datos de latidud");
+                latitud.setText("sin datos de latitud");
                 longitud.setText("sin datos de longitud");
 
             }
@@ -92,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        locManager.requestLocationUpdates(locManager.GPS_PROVIDER, 1000*60, 5,locListener);
+        locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000*60, 5,locListener);
     }
 /*/------------------------------------
 public String post(String postUrl)
